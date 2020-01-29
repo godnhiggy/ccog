@@ -80,6 +80,7 @@ $eventDescription = $_POST["eventDescription"];
 $eventDate = $_POST["eventDate"];
 $eventTime = $_POST["eventTime"];
 $eventLocation = $_POST["eventLocation"];
+$deleteItem = $_POST["deleteItem"];
 
 $servername = "localhost";
 $dbusername = "debian-sys-maint";
@@ -96,15 +97,30 @@ $sql = "INSERT INTO event (eventDescription, eventDate, eventTime, eventLocation
 VALUES ('$eventDescription', '$eventDate', '$eventTime', 'eventLocation')";
 }
 if ($conn->query($sql) === TRUE) {
-    echo "<div align='center'>";
-    echo "<br>";echo "<br>";echo "<br>";echo "<br>";
-   echo "New record created successfully";
-   echo "<br>";echo "<br>";
-  // echo " <meta http-equiv = 'refresh' content = '2; url = /insurance/insurance_input.php'/> ";
+    //echo "<div align='center'>";
+    //echo "<br><br>";
+   //echo "New record created successfully";
+   //echo "<br>";echo "<br>";
+
 header('location: calendar.php');
    echo "</div>";
 }
+
+
+if ($deleteItem) {
+  $sql = "DELETE FROM event WHERE id=$deleteItem";
+
+if ($conn->query($sql) === TRUE) {
+    echo "Record deleted successfully";
+} else {
+    echo "Error deleting record: " . $conn->error;
+}
+}
+
+
+
 ?>
+
 <div class="grid-container">
   <div  class="grid-item item1">
     <h1>CCOG Calendar</h1>
@@ -114,7 +130,7 @@ header('location: calendar.php');
 
   <div class="grid-item item2">
     <h3>Schedule a New Event at CCOG</h3>
-    <label for="eventDescription">Event Description</label><br><textarea rows="4" cols="50" name="eventDescription" required>Simply input event info here....</textarea><br><br>
+    <label for="eventDescription">Event Description</label><br><textarea rows="4" cols="50" name="eventDescription" required>event info here....</textarea><br><br>
 
 
     <label for="eventLocation">Event Location</label><br><select name="eventLocation" required><br>
@@ -142,7 +158,7 @@ header('location: calendar.php');
   <div class="grid-item item3">
     <h3>Upcoming Events at CCOG</h3>
     <?php
-    $sql = "SELECT eventDescription, eventDate, eventTime
+    $sql = "SELECT id, eventDescription, eventDate, eventTime
     FROM event";
     $result = $conn->query($sql);
     if ($result->num_rows > 0)
@@ -166,6 +182,7 @@ $today = strtotime($today);
             $eventTime = $row["eventTime"];
             $eventTime = date('g:iA',strtotime($eventTime));
             $eventTodayDate = date('F d, Y');
+            $rowId = $row["id"];
 
 
 
@@ -176,7 +193,14 @@ $today = strtotime($today);
               echo "<br>";
               echo nl2br($eventDescription);
               echo "<br>";
-              echo nl2br($row['eventDescription']);
+              echo $row["id"];
+              echo"<br>";              ?>
+              <form action="calendar.php" method="POST">
+              <?php
+              echo "<td><input type='submit' name='deleteItem' value='".$rowId."'/>Delete</td>";
+              ?>
+              </form>
+              <?php
 
 echo "<br>";
 echo "<br>";
