@@ -82,6 +82,9 @@ $eventTime = $_POST["eventTime"];
 $eventLocation = $_POST["eventLocation"];
 $deleteItem = $_POST["deleteItem"];
 
+  $eventDescription = preg_replace('/[^a-zA-Z0-9\s]/', '', $eventDescription);
+
+
 $servername = "localhost";
 $dbusername = "debian-sys-maint";
 $password = "bvjwgkcdZl64H808";
@@ -200,8 +203,8 @@ $today = strtotime($today);
               echo "<br>";
               echo nl2br($eventDescription);
               echo "<br>";
-              echo $row["id"];
-              echo"<br>";              ?>
+              //echo $row["id"];
+              //echo"<br>";              ?>
               <form action="calendar.php" method="POST">
               <?php
               echo "<td><input type='submit' name='deleteItem' value='".$rowId."'/>Delete</td>";
