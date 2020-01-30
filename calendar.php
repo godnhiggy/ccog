@@ -93,6 +93,12 @@ if ($conn->connect_error) {
    die("Connection failed: " . $conn->connect_error);
 }
 if ($eventDescription){
+
+
+
+
+
+
 $sql = "INSERT INTO event (eventDescription, eventDate, eventTime, eventLocation)
 VALUES ('$eventDescription', '$eventDate', '$eventTime', 'eventLocation')";
 }
@@ -159,8 +165,9 @@ if ($conn->query($sql) === TRUE) {
     <h3>Upcoming Events at CCOG</h3>
     <?php
     $sql = "SELECT id, eventDescription, eventDate, eventTime
-    FROM event";
+    FROM event ORDER BY eventDate";
     $result = $conn->query($sql);
+
     if ($result->num_rows > 0)
               {
 
